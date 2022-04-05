@@ -29,7 +29,7 @@ public class EsameDAO {
 			}
 
 			conn.close();
-			return voti;
+			return voti; // Ritorna la lista già inizializzata e creata
 
 		} catch (SQLException e) {
 			// e.printStackTrace();
