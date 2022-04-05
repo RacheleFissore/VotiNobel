@@ -17,22 +17,22 @@ SOLUZIONE PARZIALE: ad ogni livello L, parziale è un sottinsieme di esattamente
 GENERAZIONE SOTTOPROBLEMI: devo aggiungere un nuovo esame a parziale tra quelli che non ho ancora aggiunto
 --> PARZIALE = PARZIALE + ESAMI(i)
 Al livello L = 0 avrò N scelte possibili. Potrò avere - PARZIALE = {e1}
-															a questo punto entra dentro L = 1
-																PARZIALE = {e1, e2}
-																	a questo punto entra dentro L = 2
-																		PARZIALE = {e1, e2, e3}
-																			[...]
-															ritorna poi a L = 1
-																PARZIALE = {e1, e3}
-																	a questo punto entra dentro L = 2
-																		PARZIALE = {e1, e3, e4}
-																			[...]
-												      - PARZIALE = {e2}
-													      	a questo punto entra dentro L = 1
-													      		PARZIALE = {e2, e1} // Non conta l'ordine in questo caso e quindi questa 
-													      							// soluzione l'ho già esplorata prima
-												      	[...]
-												      - PARZIALE = {en}
+								a questo punto entra dentro L = 1
+									PARZIALE = {e1, e2} 
+										a questo punto entra dentro L = 2
+											PARZIALE = {e1, e2, e3}
+												[...]
+								ritorna poi a L = 1
+									PARZIALE = {e1, e3}
+										a questo punto entra dentro L = 2
+											PARZIALE = {e1, e3, e4}
+												[...]
+							- PARZIALE = {e2}
+								a questo punto entra dentro L = 1
+									PARZIALE = {e2, e1} // Non conta l'ordine in questo caso e quindi
+											    // questa soluzione l'ho già esplorata prima
+										[...]
+							- PARZIALE = {en}
 
 Il problema di questo approccio è che le soluzioni si ripetono, ossia in rami diversi controllo la stessa soluzione
 
