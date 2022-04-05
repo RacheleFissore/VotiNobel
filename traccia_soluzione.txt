@@ -1,0 +1,75 @@
+INPUT:
+- Insieme degli esami (ESAMI)
+- # crediti (m)
+
+OUTPUT:
+- Sottoinsieme di ESAMI, tale che:
+	* Somma ESAMI.crediti == m
+	* Media ESAMI.voto sia massima
+	
+** APPROCCIO 1 (il più "stupido") **
+Ad ogni passo della ricorsione parto da una soluzione parziale e decido quale esame della lista di partenza devo mettere in parziale,
+per farlo li provo tutti, ossia ad ogni livello L della ricorsione inserisco un esame in parziale, non sapendo a priori quali esami
+vanno bene, li provo tutti. 
+
+SOLUZIONE PARZIALE: ad ogni livello L, parziale è un sottinsieme di esattamente L esami
+
+GENERAZIONE SOTTOPROBLEMI: devo aggiungere un nuovo esame a parziale tra quelli che non ho ancora aggiunto
+--> PARZIALE = PARZIALE + ESAMI(i)
+Al livello L = 0 avrò N scelte possibili. Potrò avere - PARZIALE = {e1}
+															a questo punto entra dentro L = 1
+																PARZIALE = {e1, e2}
+																	a questo punto entra dentro L = 2
+																		PARZIALE = {e1, e2, e3}
+																			[...]
+															ritorna poi a L = 1
+																PARZIALE = {e1, e3}
+																	a questo punto entra dentro L = 2
+																		PARZIALE = {e1, e3, e4}
+																			[...]
+												      - PARZIALE = {e2}
+													      	a questo punto entra dentro L = 1
+													      		PARZIALE = {e2, e1} // Non conta l'ordine in questo caso e quindi questa 
+													      							// soluzione l'ho già esplorata prima
+												      	[...]
+												      - PARZIALE = {en}
+
+Il problema di questo approccio è che le soluzioni si ripetono, ossia in rami diversi controllo la stessa soluzione
+
+CASI TERMINALI
+1) L = N, cioè il livello della ricorsione a cui si è arrivati è pari al numero di esami presenti, quindi ho provato tutti gli esami
+2) Se PARZIALE.sommaCrediti() == m --> potrebbe essere una soluzione, ma magari non è quella migliore e quindi non va bene perchè a me 
+   interessa quella migliore. Quindi devo trovare la soluzione migliore --> PROBLEMA DI OTTIMIZZAZIONE
+   !!! N.B: Per capire se una soluzione è migliore la confronto con la migliore che ho trovato fino ad ora !!!
+   
+   ELSE se PARZIALE.sommaCrediti() > m --> non può essere una soluzione => esco dalla ricorsione
+   
+ ** APPROCCIO 2 ("più furbo") ** --> complessità 2^N
+ Generare i sottoproblemi uno per volta, scorrendo l'insieme di esami di partenza in ordine, decidendo per ogni esame:
+ 	- se debba essere inserito
+ 	- se non debba essere inserito
+ 
+ Quindi prendiamo l'insieme degli esami di partenza, lo scorriamo in ordine e per ogni esame decidiamo se l'esame deve essere inserito o no, 
+ ossia provo ad inserirlo e faccio andare avanti la ricorsione supponendo di averlo inserito, oppure provo a non inserirlo e faccio andare
+ avanti la ricorsione supponendo di non averlo inserito. Per ogni esame si hanno quindi 2 esami possibili, avendo N esami la complessità
+ è 2^N che è migliore di N! del caso prima, non succederà mai di avere due esami ripetuti in ordine diverso perchè li sto scorrendo in ordine.
+ Es: e1, e2, .. en, prendo e1 e analizzo se lo metto o non lo metto, prendo e2 e analizzo se metterlo o no ecc.. quindi essendo che li scorro
+ in ordine non potrà mai esserci e2, e1 ma solo e1, e2
+ 	
+ In questo caso Il LIVELLO DELLA RICORSIONE coindice con ESAME DA CONSIDERARE
+ L = 0 --> 2 scelte possibili, ossia parziale che contiene il primo esame o che non lo contiene, quindi provo ad inserirlo oppure a non inserirlo
+(non come prima che avevo N scelte possibili)  
+ 	PARZIALE = {e1} 
+ 		L = 1 --> Anche qui ho solo due scelte possibili, o inserisco e2 o non lo inserisco
+ 			PARZIALE = {e1, e2}
+ 			
+ 			PARZIALE = {e1}
+ 	
+ 	PARZIALE = {}
+ 		L = 1 --> Anche qui ho solo due scelte possibili, a partire dall'insieme vuoto o inserisco e2 o non lo inserisco
+ 			PARZIALE = {e2}
+ 			
+ 			PARZIALE = {}
+ 
+ Scorrere gli esami di partenza in ordine permette di non esplorare strade inutili.		
+ 			
